@@ -1,2 +1,0 @@
-# CDN
-aws logos

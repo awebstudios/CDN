@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Web Studio | Download Logos</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <style>
+
+    /* Estilos básicos */
+    :root{
+      --borders:10px;
+      --blue:#007bff;
+      --blue-hover:#0056b3;
+      --green:#80ff00;
+      --grey-light:#f2f2f2;
+    }
+    * {
+        -webkit-tap-highlight-color: transparent;
+        box-sizing: border-box;
+        list-style-position: inside;
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+    }
+
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px #f4f4f9; 
+        border-radius: 10px;
+    }
+    
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: var(--blue); 
+        border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--blue-hover); 
+    }
+    img{
+      display: block;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      height: 100%;
+      background: #eff2fd;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 600px;
+      padding: 2rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+      border-radius: var(--borders);
+      z-index: 1000;
+      height: 60vh;
+      overflow: auto;
+      background: white;
+    }
+    .popupText{
+      background: var(--grey-light);
+      padding: 1rem;
+    }
+
+    .popup.active {
+      display: block;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+
+    .popup h2 {
+      margin-top: 0;
+    }
+
+    .popup .btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: var(--blue);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .popup .btn:hover {
+      background-color: var(--blue-hover);
+    }
+
+    .input-group {
+      margin-top: var(--borders);
+    }
+
+    .input-group input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .input-group label {
+      font-size: 14px;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      display: none;
+    }
+
+    #mainContent{
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      height: 100%;
+
+    }
+    .mainContent-image{
+      width: 300px;
+    }
+    .mainContent-title{
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+      font-size: 4rem;
+      font-weight: 900;
+    }
+    .mainContent-text{
+        text-align: center;
+    }
+    .image-wrapper{
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+
+    }
+    .image-container{
+      background: #e6e6e6;
+      width: 400px;
+      height: 225px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: stretch;
+      padding: 1rem;
+      gap: 1rem;
+      border-radius: var(--borders);
+      box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+    }
+    .image-container-thumb{
+      flex: 1;
+      background: #cccccc;
+      border: 1px solid rgb(189, 189, 189);
+      padding: 1rem;
+      border-radius: 5px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .image-container-img{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    
+    }
+    .buttons{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      height: 100%;
+      flex:1;
+    }
+    .buttons-div{
+      padding: 0.5rem 1.3rem;
+      background-color: var(--blue);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      font-size: 1rem;
+      font-weight: 900;
+      font-size: 1.2rem;
+      text-shadow: 1px 1px 2px #000000;
+    }
+    .buttons-div:hover{
+      background-color: var(--green);
+    }
+    
+  </style>
+</head>
+<body>
+
+
+  <div class="overlay"></div>
+  <div class="popup" id="termsPopup">
+    <div class="popupText">
+
+        <h2>Terms and Conditions</h2>
+        <br>
+        <p><strong>Terms of Use and Legal Notice for the Use of Company Logos</strong></p>
+        <br>
+        <p><strong>1. Intellectual Property</strong></p>
+        <br>
+        <p>All logos and their variations hosted on this website are the exclusive property of A WEB STUDIO (hereinafter, "the Company") and are protected by copyright, trademark laws, and other applicable regulations both nationally and internationally. Any unauthorized use, reproduction, distribution, alteration, or exploitation of these logos without prior written consent from the Company is strictly prohibited.</p>
+        <br>
+        <p><strong>2. Authorization for Use</strong></p>
+        <br>
+        <p>Access to and use of the logos is restricted exclusively to authorized employees of the Company, approved service providers, business partners, and any third party who has received express permission from the Company.</p>
+        <br>
+        <p><strong>Permitted Uses:</strong></p>
+        <br>
+        <ul>
+            <li>Incorporating the logos into official correspondence (e.g., letters, reports, proposals).</li>
+            <br>
+            <li>Use in approved advertising materials, such as t-shirts, banners, business cards, or similar items.</li>
+            <br>
+            <li>Any other use previously authorized by the Company in writing.</li>
+        </ul>
+        <br>
+        <p><strong>Prohibited Uses:</strong></p>
+        <br>
+        <ul>
+            <li>Modification, distortion, animation, or alteration of the logo's design, color, proportion, or typography.</li>
+            <br>
+            <li>Use in contexts or materials that may damage the Company's reputation, including offensive, misleading, fraudulent, or illegal content.</li>
+            <br>
+            <li>Distribution of the logos to unauthorized third parties without the Company’s consent.</li>
+        </ul>
+        <br>
+        <p><strong>3. Usage Requirements</strong></p>
+        <br>
+        <p>Any person authorized to use the logos must strictly adhere to the following requirements:</p>
+        <br>
+        <ul>
+            <li>The logos must be used according to the visual specifications set out in the Company’s corporate identity manual.</li>
+            <br>
+            <li>They must not be placed on materials that suggest false endorsement by the Company.</li>
+            <br>
+            <li>When the logos are used in digital media, a reference link to the Company’s official website must be provided.</li>
+        </ul>
+        <br>
+        <p><strong>4. Legal Consequences of Improper Use</strong></p>
+        <br>
+        <p>Any unauthorized, negligent, or malicious use of the Company's logos will be considered a serious violation of intellectual property rights and may result in legal actions, including:</p>
+        <br>
+        <ul>
+            <li><strong>Immediate cessation of unauthorized use.</strong></li>
+            <br>
+            <li><strong>Compensation for damages to the Company's reputation, image, or income.</strong></li>
+            <br>
+            <li><strong>Civil and/or criminal legal actions, as provided by the laws in the relevant jurisdiction.</strong></li>
+            <br>
+            <li><strong>Request for immediate removal of any material containing the logos.</strong></li>
+        </ul>
+        <br>
+        <p>In case of a dispute, the Company reserves the right to take the case to the courts of [Indicate Jurisdiction], where the Company’s main office is registered.</p>
+        <br>
+        <p><strong>5. Disclaimer</strong></p>
+        <br>
+        <p>The Company is not responsible for the use of the logos by unauthorized third parties if they have obtained access improperly. In this regard, the use of this website is protected by access controls and encryption, but authorized users are advised to keep provided links and access credentials confidential.</p>
+        <br>
+        <p><strong>6. Reserved Rights</strong></p>
+        <br>
+        <p>The Company reserves the right to modify, limit, or revoke access to the logos at any time without prior notice. Additionally, the Company may update the terms of use periodically. It is the responsibility of authorized users to stay informed of changes by consulting this page.</p>
+        <br>
+        <p><strong>7. Contact</strong></p>
+        <br>
+        <p>For authorization requests or inquiries about the use of the logos, please contact:</p>
+        <br>
+        <ul>
+            <li><strong>Email:</strong> info@awebstudios.com</li>
+            <br>
+            <li><strong>Phone:</strong> +(502) 3108-2157</li>
+        </ul>
+        <br>
+        <p><strong>8. Acceptance of Terms</strong></p>
+        <br>
+        <p>By accessing and using the logos hosted on this site, you explicitly agree to these terms and conditions. If you disagree with any of the points outlined here, you must refrain from using this website and the resources available on it.</p>
+        <br>
+        <p><strong>Final Note:</strong></p>
+        <br>
+        <p><strong>All rights reserved.</strong> This site and its content are protected under the copyright and trademark laws of United States of America and Guatemala. Violation of these laws will be prosecuted to the fullest extent permitted by law.</p>
+    </div>
+
+    <label>
+      <input type="checkbox" id="acceptTerms">
+      I have read and accept the terms and conditions.
+    </label>
+    <span class="btn" id="continueBtn">Continue</span>
+  </div>
+
+
+  <div class="popup" id="pinPopup">
+    <h2>Enter your PIN</h2>
+    <div class="input-group">
+      <label for="pinInput">Please enter the PIN to access:</label>
+      <input type="password" id="pinInput" maxlength="4">
+      <p class="error" id="pinError">Incorrect PIN. Please try again.</p>
+    </div>
+    <span class="btn" id="verifyPinBtn">Verify</span>
+  </div>
+
+ 
+  <div id="mainContent" style="display: none;">  
+    
+    <img src="./aws-logo-vertical/vertical-main/aws-vertical-main.png" class="mainContent-image">
+
+    <p class="mainContent-text">Here you can download all the variations of our logo, choose the format and CLICK on the button corresponding to the format you want.</p>
+
+    <p class="mainContent-text"><strong>Note:</strong> Users are requested not to send downloaded logos via <strong>WhatsApp</strong> or <strong>Telegram</strong>. Using these platforms results in a <strong>reduction in image quality.</strong></p>
+
+    <div class="image-wrapper">
+
+      <!-- ########################## -->
+
+      <div class="image-container">
+          
+        <div class="image-container-thumb">
+          <img src="./aws-logo-vertical/vertical-main/aws-vertical-noborder-main.png" alt="AWS, Logo Vertical, Color Main" class="image-container-img">
+        </div>
+
+        <div class="buttons">
+
+            <a href="./aws-logo-vertical/vertical-main/aws-vertical-noborder-main.png" download="aws-vertical-noborder-main.png">
+              <button class="buttons-div">NB .PNG</button>
+            </a>
+
+            <a href="./aws-logo-vertical/vertical-main/aws-vertical-main.png" download="aws-vertical-main.png">
+                <button class="buttons-div">.PNG</button>
+            </a>
+
+            <a href="./aws-logo-vertical/vertical-main/aws-vertical-main.svg" download="aws-vertical-main.svg">
+                <button class="buttons-div">.SVG</button>
+            </a>
+
+            <a href="./aws-logo-vertical/vertical-main/aws-vertical-main.zip" download="aws-vertical-main.zip">
+                <button class="buttons-div">.ZIP</button>
+            </a>
+
+        </div>
+
+      </div>
+
+      <!-- ########################## -->
+      
+      <div class="image-container">
+          
+        <div class="image-container-thumb">
+          <img src="./aws-logo-vertical/vertical-negro/aws-vertical-noborder-negro.png" alt="AWS, Logo Vertical, Color Negro" class="image-container-img">
+        </div>
+
+        <div class="buttons">
+
+            <a href="./aws-logo-vertical/vertical-negro/aws-vertical-noborder-negro.png" download="aws-vertical-noborder-negro.png">
+              <button class="buttons-div">NB .PNG</button>
+            </a>
+
+            <a href="./aws-logo-vertical/vertical-negro/aws-vertical-negro.png" download="aws-vertical-negro.png">
+                <button class="buttons-div">.PNG</button>
+            </a>
+
+            <a href="./aws-logo-vertical/vertical-negro/aws-vertical-negro.svg" download="aws-vertical-negro.svg">
+                <button class="buttons-div">.SVG</button>
+            </a>
+
+            <a href="./aws-logo-vertical/vertical-negro/aws-vertical-negro.zip" download="aws-vertical-negro.zip">
+                <button class="buttons-div">.ZIP</button>
+            </a>
+
+        </div>
+
+      </div>
+
+      <!-- ########################## -->
+      
+      <div class="image-container">
+          
+        <div class="image-container-thumb">
+          <img src="./aws-logo-vertical/vertical-blanco/aws-vertical-noborder-blanco.png" alt="AWS, Logo Vertical, Color Blanco" class="image-container-img">
+        </div>
+
+        <div class="buttons">
+
+            <a href="./aws-logo-vertical/vertical-blanco/aws-vertical-noborder-blanco.png" download="aws-vertical-noborder-blanco.png">
+              <button class="buttons-div">NB .PNG</button>
+            </a>
+
+            <a href="./aws-logo-vertical/vertical-blanco/aws-vertical-blanco.png" download="aws-vertical-blanco.png">
+                <button class="buttons-div">.PNG</button>
+            </a>
+
+            <a href="./aws-logo-vertical/vertical-blanco/aws-vertical-blanco.svg" download="aws-vertical-blanco.svg">
+                <button class="buttons-div">.SVG</button>
+            </a>
+
+            <a href="./aws-logo-vertical/vertical-blanco/aws-vertical-blanco.zip" download="aws-vertical-blanco.zip">
+                <button class="buttons-div">.ZIP</button>
+            </a>
+
+        </div>
+
+      </div>
+
+      <!-- ########################## -->
+      
+      <div class="image-container">
+          
+        <div class="image-container-thumb">
+          <img src="./aws-logo-horizontal/horizontal-main/aws-horizontal-noborder-main.png" alt="AWS, Logo Horizontal, Color Main" class="image-container-img">
+        </div>
+
+        <div class="buttons">
+
+            <a href="./aws-logo-horizontal/horizontal-main/aws-horizontal-noborder-main.png" download="aws-horizontal-noborder-main.png">
+              <button class="buttons-div">NB .PNG</button>
+            </a>
+
+            <a href="./aws-logo-horizontal/horizontal-main/aws-horizontal-main.png" download="aws-horizontal-main.png">
+                <button class="buttons-div">.PNG</button>
+            </a>
+
+            <a href="./aws-logo-horizontal/horizontal-main/aws-horizontal-main.svg" download="aws-horizontal-main.svg">
+                <button class="buttons-div">.SVG</button>
+            </a>
+
+            <a href="./aws-logo-horizontal/horizontal-main/aws-horizontal-main.zip" download="aws-horizontal-main.zip">
+                <button class="buttons-div">.ZIP</button>
+            </a>
+
+        </div>
+
+      </div>
+
+      <!-- ########################## -->
+
+      <div class="image-container">
+          
+        <div class="image-container-thumb">
+          <img src="./aws-logo-horizontal/horizontal-negro/aws-horizontal-noborder-negro.png" alt="AWS, Logo Horizontal, Color Negro" class="image-container-img">
+        </div>
+
+        <div class="buttons">
+
+            <a href="./aws-logo-horizontal/horizontal-negro/aws-horizontal-noborder-negro.png" download="aws-horizontal-noborder-negro.png">
+              <button class="buttons-div">NB .PNG</button>
+            </a>
+
+            <a href="./aws-logo-horizontal/horizontal-negro/aws-horizontal-negro.png" download="aws-horizontal-negro.png">
+                <button class="buttons-div">.PNG</button>
+            </a>
+
+            <a href="./aws-logo-horizontal/horizontal-negro/aws-horizontal-negro.svg" download="aws-horizontal-negro.svg">
+                <button class="buttons-div">.SVG</button>
+            </a>
+
+            <a href="./aws-logo-horizontal/horizontal-negro/aws-horizontal-negro.zip" download="aws-horizontal-negro.zip">
+                <button class="buttons-div">.ZIP</button>
+            </a>
+
+        </div>
+
+      </div>
+
+      <!-- ########################## -->
+
+      <div class="image-container">
+          
+        <div class="image-container-thumb">
+          <img src="./aws-logo-horizontal/horizontal-blanco/aws-horizontal-noborder-blanco.png" alt="AWS, Logo Horizontal, Color blanco" class="image-container-img">
+        </div>
+
+        <div class="buttons">
+
+            <a href="./aws-logo-horizontal/horizontal-blanco/aws-horizontal-noborder-blanco.png" download="aws-horizontal-noborder-blanco.png">
+              <button class="buttons-div">NB .PNG</button>
+            </a>
+
+            <a href="./aws-logo-horizontal/horizontal-blanco/aws-horizontal-blanco.png" download="aws-horizontal-blanco.png">
+                <button class="buttons-div">.PNG</button>
+            </a>
+
+            <a href="./aws-logo-horizontal/horizontal-blanco/aws-horizontal-blanco.svg" download="aws-horizontal-blanco.svg">
+                <button class="buttons-div">.SVG</button>
+            </a>
+
+            <a href="./aws-logo-horizontal/horizontal-blanco/aws-horizontal-blanco.zip" download="aws-horizontal-blanco.zip">
+                <button class="buttons-div">.ZIP</button>
+            </a>
+
+        </div>
+
+      </div>
+
+      <!-- ########################## -->
+
+      <div class="image-container">
+          
+        <div class="image-container-thumb">
+          <img src="./aws-icon/icono-main/aws-icono-noborder-main.png" alt="AWS, Icono, Color Main" class="image-container-img">
+        </div>
+
+        <div class="buttons">
+
+            <a href="./aws-icon/icono-main/aws-icono-noborder-main.png" download="aws-icono-noborder-main.png">
+              <button class="buttons-div">NB .PNG</button>
+            </a>
+
+        </div>
+
+      </div>
+
+      <!-- ########################## -->
+
+      <div class="image-container">
+          
+        <div class="image-container-thumb">
+          <img src="./aws-icon/icono-negro/aws-icono-noborder-negro.png" alt="AWS, Icono, Color negro" class="image-container-img">
+        </div>
+
+        <div class="buttons">
+
+            <a href="./aws-icon/icono-negro/aws-icono-noborder-negro.png" download="aws-icono-noborder-negro.png">
+              <button class="buttons-div">NB .PNG</button>
+            </a>
+
+        </div>
+
+      </div>
+
+      <!-- ########################## -->
+
+      <div class="image-container">
+          
+        <div class="image-container-thumb">
+          <img src="./aws-icon/icono-blanco/aws-icono-noborder-blanco.png" alt="AWS, Icono, Color blanco" class="image-container-img">
+        </div>
+
+        <div class="buttons">
+
+            <a href="./aws-icon/icono-blanco/aws-icono-noborder-blanco.png" download="aws-icono-noborder-blanco.png">
+              <button class="buttons-div">NB .PNG</button>
+            </a>
+
+        </div>
+
+      </div>
+
+      <!-- ########################## -->
+      
+    </div>
+
+  </div>
+
+  <script>
+ 
+    const overlay = document.querySelector('.overlay');
+    const termsPopup = document.getElementById('termsPopup');
+    const pinPopup = document.getElementById('pinPopup');
+    const mainContent = document.getElementById('mainContent');
+    const continueBtn = document.getElementById('continueBtn');
+    const acceptTerms = document.getElementById('acceptTerms');
+    const pinInput = document.getElementById('pinInput');
+    const verifyPinBtn = document.getElementById('verifyPinBtn');
+    const pinError = document.getElementById('pinError');
+    const PIN_HASH = "af6dab2207e14431a4137029b4dbd46f3b78f63579c001420767f76d63bcdbed";
+
+
+    window.onload = () => {
+      overlay.classList.add('active');
+      termsPopup.classList.add('active');
+    };
+
+  
+    continueBtn.addEventListener('click', () => {
+      if (acceptTerms.checked) {
+        termsPopup.classList.remove('active');
+        pinPopup.classList.add('active');
+      } else {
+        alert("Debe aceptar los términos y condiciones para continuar.");
+      }
+    });
+
+   
+    verifyPinBtn.addEventListener('click', () => {
+    const inputPinHash = CryptoJS.SHA256(pinInput.value).toString();
+        if (inputPinHash === PIN_HASH) {
+          pinPopup.classList.remove('active');
+          overlay.classList.remove('active');
+          mainContent.style.display = 'flex';
+          mainContent.style.flexDirection = 'column';
+        } else {
+          pinError.style.display = 'flex';
+          pinError.style.flexDirection = 'column';
+        }
+    });
+
+  
+    pinInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        const inputPinHash = CryptoJS.SHA256(pinInput.value).toString();
+        if (inputPinHash === PIN_HASH) {
+          pinPopup.classList.remove('active');
+          overlay.classList.remove('active');
+          mainContent.style.display = 'flex';
+          mainContent.style.flexDirection = 'column';
+        } else {
+          pinError.style.display = 'flex';
+          pinError.style.flexDirection = 'column';
+        }
+      }
+    });
+
+ 
+    pinInput.addEventListener('input', () => {
+      pinError.style.display = 'none';
+    });
+
+    
+  </script>
+
+<script>
+  fetch('https://api.ipgeolocation.io/ipgeo?apiKey=50f98f9566ec4ad98dff365e6a959e9c')
+      .then(response => response.json())
+      .then(data => {
+          const restrictedCountries = ['AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ', 'BA', 'BB', 'BC', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BK', 'BL', 'BM', 'BN', 'BO', 'BP', 'BQ', 'BR', 'BS', 'BT', 'BU', 'BV', 'BW', 'BX', 'BY', 'BZ', 'CA', 'CB', 'CC', 'CD', 'CE', 'CF', 'CG', 'CH', 'CI', 'CJ', 'CK', 'CL', 'CM', 'CN', 'CO', 'CP', 'CQ', 'CR', 'CS', 'CT', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ', 'DA', 'DB', 'DC', 'DD', 'DE', 'DF', 'DG', 'DH', 'DI', 'DJ', 'DK', 'DL', 'DM', 'DN', 'DO', 'DP', 'DQ', 'DR', 'DS', 'DT', 'DU', 'DV', 'DW', 'DX', 'DY', 'DZ', 'EA', 'EB', 'EC', 'ED', 'EE', 'EF', 'EG', 'EH', 'EI', 'EJ', 'EK', 'EL', 'EM', 'EN', 'EO', 'EP', 'EQ', 'ER', 'ES', 'ET', 'EU', 'EV', 'EW', 'EX', 'EY', 'EZ', 'FA', 'FB', 'FC', 'FD', 'FE', 'FF', 'FG', 'FH', 'FI', 'FJ', 'FK', 'FL', 'FM', 'FN', 'FO', 'FP', 'FQ', 'FR', 'FS', 'FT', 'FU', 'FV', 'FW', 'FX', 'FY', 'FZ', 'GA', 'GB', 'GC', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI', 'GJ', 'GK', 'GL', 'GM', 'GN', 'GO', 'GP', 'GQ', 'GR', 'GS', 'GU', 'GV', 'GW', 'GX', 'GY', 'GZ', 'HA', 'HB', 'HC', 'HD', 'HE', 'HF', 'HG', 'HH', 'HI', 'HJ', 'HK', 'HL', 'HM', 'HN', 'HO', 'HP', 'HQ', 'HR', 'HS', 'HT', 'HU', 'HV', 'HW', 'HX', 'HY', 'HZ', 'IA', 'IB', 'IC', 'ID', 'IE', 'IF', 'IG', 'IH', 'II', 'IJ', 'IK', 'IL', 'IM', 'IN', 'IO', 'IP', 'IQ', 'IR', 'IS', 'IT', 'IU', 'IV', 'IW', 'IX', 'IY', 'IZ', 'JA', 'JB', 'JC', 'JD', 'JE', 'JF', 'JG', 'JH', 'JI', 'JJ', 'JK', 'JL', 'JM', 'JN', 'JO', 'JP', 'JQ', 'JR', 'JS', 'JT', 'JU', 'JV', 'JW', 'JX', 'JY', 'JZ', 'KA', 'KB', 'KC', 'KD', 'KE', 'KF', 'KG', 'KH', 'KI', 'KJ', 'KK', 'KL', 'KM', 'KN', 'KO', 'KP', 'KQ', 'KR', 'KS', 'KT', 'KU', 'KV', 'KW', 'KX', 'KY', 'KZ', 'LA', 'LB', 'LC', 'LD', 'LE', 'LF', 'LG', 'LH', 'LI', 'LJ', 'LK', 'LL', 'LM', 'LN', 'LO', 'LP', 'LQ', 'LR', 'LS', 'LT', 'LU', 'LV', 'LW', 'LX', 'LY', 'LZ', 'MA', 'MB', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH', 'MI', 'MJ', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ', 'NA', 'NB', 'NC', 'ND', 'NE', 'NF', 'NG', 'NH', 'NI', 'NJ', 'NK', 'NL', 'NM', 'NN', 'NO', 'NP', 'NQ', 'NR', 'NS', 'NT', 'NU', 'NV', 'NW', 'NX', 'NY', 'NZ', 'OA', 'OB', 'OC', 'OD', 'OE', 'OF', 'OG', 'OH', 'OI', 'OJ', 'OK', 'OL', 'OM', 'ON', 'OO', 'OP', 'OQ', 'OR', 'OS', 'OT', 'OU', 'OV', 'OW', 'OX', 'OY', 'OZ', 'PA', 'PB', 'PC', 'PD', 'PE', 'PF', 'PG', 'PH', 'PI', 'PJ', 'PK', 'PL', 'PM', 'PN', 'PO', 'PP', 'PQ', 'PR', 'PS', 'PT', 'PU', 'PV', 'PW', 'PX', 'PY', 'PZ', 'QA', 'QB', 'QC', 'QD', 'QE', 'QF', 'QG', 'QH', 'QI', 'QJ', 'QK', 'QL', 'QM', 'QN', 'QO', 'QP', 'QQ', 'QR', 'QS', 'QT', 'QU', 'QV', 'QW', 'QX', 'QY', 'QZ', 'RA', 'RB', 'RC', 'RD', 'RE', 'RF', 'RG', 'RH', 'RI', 'RJ', 'RK', 'RL', 'RM', 'RN', 'RO', 'RP', 'RQ', 'RR', 'RS', 'RT', 'RU', 'RV', 'RW', 'RX', 'RY', 'RZ', 'SA', 'SB', 'SC', 'SD', 'SE', 'SF', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SP', 'SQ', 'SR', 'SS', 'ST', 'SU', 'SV', 'SW', 'SX', 'SY', 'SZ', 'TA', 'TB', 'TC', 'TD', 'TE', 'TF', 'TG', 'TH', 'TI', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TP', 'TQ', 'TR', 'TS', 'TT', 'TU', 'TV', 'TW', 'TX', 'TY', 'TZ', 'UA', 'UB', 'UC', 'UD', 'UE', 'UF', 'UG', 'UH', 'UI', 'UJ', 'UK', 'UL', 'UM', 'UN', 'UO', 'UP', 'UQ', 'UR', 'US', 'UT', 'UU', 'UV', 'UW', 'UX', 'UY', 'UZ', 'VA', 'VB', 'VC', 'VD', 'VE', 'VF', 'VG', 'VH', 'VI', 'VJ', 'VK', 'VL', 'VM', 'VN', 'VO', 'VP', 'VQ', 'VR', 'VS', 'VT', 'VU', 'VV', 'VW', 'VX', 'VY', 'VZ', 'WA', 'WB', 'WC', 'WD', 'WE', 'WF', 'WG', 'WH', 'WI', 'WJ', 'WK', 'WL', 'WM', 'WN', 'WO', 'WP', 'WQ', 'WR', 'WS', 'WT', 'WU', 'WV', 'WW', 'WX', 'WY', 'WZ', 'XA', 'XB', 'XC', 'XD', 'XE', 'XF', 'XG', 'XH', 'XI', 'XJ', 'XK', 'XL', 'XM', 'XN', 'XO', 'XP', 'XQ', 'XR', 'XS', 'XT', 'XU', 'XV', 'XW', 'XX', 'XY', 'XZ', 'YA', 'YB', 'YC', 'YD', 'YE', 'YF', 'YG', 'YH', 'YI', 'YJ', 'YK', 'YL', 'YM', 'YN', 'YO', 'YP', 'YQ', 'YR', 'YS', 'YT', 'YU', 'YV', 'YW', 'YX', 'YY', 'YZ', 'ZA', 'ZB', 'ZC', 'ZD', 'ZE', 'ZF', 'ZG', 'ZH', 'ZI', 'ZJ', 'ZK', 'ZL', 'ZM', 'ZN', 'ZO', 'ZP', 'ZQ', 'ZR', 'ZS', 'ZT', 'ZU', 'ZV', 'ZW', 'ZX', 'ZY', 'ZZ']; 
+          if (restrictedCountries.includes(data.country_code2)) {
+              alert('Restricted access in your country.');
+              window.location.href = 'https://awebstudios.github.io/CDN/unavaible.html';
+          }
+      })
+      .catch(error => console.error('Geolocation error:', error));
+</script>
+</body>
+</html>
